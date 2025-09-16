@@ -190,7 +190,7 @@ export default function LanguageQuiz() {
             </div>
             <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
               <div 
-                className={`${styles.progressBar} ${styles[`scoreProgress${score}`]}`}
+                className={`${styles.progressBar} ${score >= 0 && score <= 10 ? styles[`scoreProgress${score}`] : styles.scoreProgress0}`}
               ></div>
             </div>
           </div>
@@ -234,7 +234,7 @@ export default function LanguageQuiz() {
         
         <div className="bg-secondary-50 border-l-4 border-secondary-500 p-4">
           <p className="text-gray-700">
-            Want to learn more about African languages? Explore our <a href="/services" className="text-secondary-600 hover:underline">translation services</a> or <a href="/contact" className="text-secondary-600 hover:underline">contact us</a> for language consultation.
+            Want to learn more about African languages? Explore our <a href="/transLuga/services" className="text-secondary-600 hover:underline">translation services</a> or <a href="/transLuga/contact" className="text-secondary-600 hover:underline">contact us</a> for language consultation.
           </p>
         </div>
       </div>
@@ -253,7 +253,7 @@ export default function LanguageQuiz() {
       <div className="mb-6">
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div 
-            className={`${styles.progressBar} ${styles[`progressBar${Math.round(((currentQuestion + 1) / quizQuestions.length) * 10) * 10}`]}`}
+            className={`${styles.progressBar} ${styles[`progressBar${Math.min(100, Math.max(0, Math.round(((currentQuestion + 1) / quizQuestions.length) * 10) * 10))}`]}`}
           ></div>
         </div>
       </div>
