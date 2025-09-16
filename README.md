@@ -1,4 +1,4 @@
-# Transluga - African Language Translation Services
+# Transluga - Language Translation Services
 
 ![Transluga Logo](./transluga-app/public/images/transluga-logo.svg)
 
