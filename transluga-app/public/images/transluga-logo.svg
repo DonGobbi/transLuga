@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-  <!-- Speech bubbles representing translation -->
-  <g id="speech-bubbles">
-    <!-- First speech bubble (primary color) -->
-    <path d="M40 10 C25 10, 15 20, 15 30 C15 40, 25 50, 40 50 L55 50 L50 60 L60 50 L70 50 C85 50, 95 40, 95 30 C95 20, 85 10, 70 10 Z" 
-          fill="#0369a1" /> <!-- Primary-700 -->
+<svg width="240" height="60" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Modern Wordmark with African Symbol Logo -->
+  
+  <!-- Adinkra Symbol (Stylized) - Represents Communication -->
+  <g id="symbol">
+    <circle cx="30" cy="30" r="24" fill="#0369a1" opacity="0.9" />
     
-    <!-- Second speech bubble (secondary color) -->
-    <path d="M70 5 C85 5, 95 15, 95 25 C95 35, 85 45, 70 45 L55 45 L60 55 L50 45 L40 45 C25 45, 15 35, 15 25 C15 15, 25 5, 40 5 Z" 
-          fill="#334155" fill-opacity="0.8" /> <!-- Secondary-700 with opacity -->
+    <!-- Stylized African Symbol -->
+    <path d="M30 12 C24 12, 18 16, 18 24 C18 32, 24 36, 30 36 C36 36, 42 32, 42 24 C42 16, 36 12, 30 12 Z" 
+          fill="none" stroke="#f0f9ff" stroke-width="2" />
     
-    <!-- African continent silhouette (stylized) -->
-    <path d="M55 20 C57 18, 60 19, 62 21 C64 22, 65 21, 66 23 C68 25, 67 28, 69 29 C70 31, 68 33, 67 35 C65 36, 63 35, 61 36 C59 37, 57 35, 55 34 C53 32, 52 30, 53 28 C54 26, 53 24, 55 20 Z" 
-          fill="#f0f9ff" /> <!-- Primary-50 (very light blue) -->
+    <path d="M20 24 L40 24 M30 14 L30 34" 
+          stroke="#f0f9ff" stroke-width="2" stroke-linecap="round" />
+    
+    <path d="M24 18 C27 21, 33 21, 36 18 M24 30 C27 27, 33 27, 36 30" 
+          stroke="#f0f9ff" stroke-width="2" stroke-linecap="round" fill="none" />
   </g>
   
-  <!-- Transluga text -->
-  <g id="text">
-    <text x="105" y="30" font-family="Arial, sans-serif" font-weight="bold" font-size="22" text-anchor="start" fill="#0369a1">TRANS</text>
-    <text x="105" y="30" font-family="Arial, sans-serif" font-weight="bold" font-size="22" text-anchor="start" dx="75" fill="#334155">LUGA</text>
-    <text x="105" y="42" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="#64748b">African Language Specialists</text>
+  <!-- Connecting Element -->
+  <path d="M54 30 L70 30" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2" />
+  
+  <!-- TRANSLUGA Text -->
+  <g id="wordmark">
+    <!-- TRANS in Primary Color -->
+    <path d="M72 18 L100 18 M86 18 L86 42 M102 18 L114 42 M114 18 L102 42 M118 18 C118 18, 130 18, 130 26 C130 30, 126 32, 122 32 C126 32, 132 34, 132 42" 
+          stroke="#0369a1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    
+    <!-- LUGA in Secondary Color -->
+    <path d="M136 18 L136 42 L148 42 M152 18 L152 42 C152 42, 164 42, 164 34 C164 26, 152 26, 152 26 M168 18 C168 18, 180 18, 180 26 C180 34, 168 34, 168 34 C168 34, 180 34, 180 42 M184 18 L184 42 L196 42 L196 30 L184 30" 
+          stroke="#334155" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
   </g>
+  
+  <!-- Tagline -->
+  <text x="72" y="52" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#64748b">African Language Specialists</text>
 </svg>
