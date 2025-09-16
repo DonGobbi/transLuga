@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { FaCheck, FaArrowRight, FaGlobe, FaLanguage, FaFileAlt, FaHeadset, FaStar } from 'react-icons/fa';
+import { FaCheck, FaArrowRight, FaGlobe, FaLanguage, FaFileAlt, FaHeadset, FaStar, FaCalculator } from 'react-icons/fa';
+import QuoteCalculator from '../components/QuoteCalculator';
 
 export default function Pricing() {
   const pricingPlans = [
@@ -587,6 +588,29 @@ export default function Pricing() {
             >
               Contact Us
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Quote Calculator */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="inline-block bg-secondary-100 px-4 py-2 rounded-lg text-secondary-800 font-medium mb-4">
+              <FaCalculator className="inline mr-2" /> Interactive Tool
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Calculate Your Translation Cost</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              Use our interactive calculator to get an instant estimate for your translation project. Adjust the parameters to see how different options affect the price.
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <QuoteCalculator />
+          </div>
+          
+          <div className="mt-8 text-center text-gray-600 text-sm">
+            <p>This calculator provides estimates only. For a precise quote, please contact our team.</p>
           </div>
         </div>
       </section>
