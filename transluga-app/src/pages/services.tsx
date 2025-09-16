@@ -115,7 +115,7 @@ export default function Services() {
       <Head>
         <title>Our Services | Transluga</title>
         <meta name="description" content="Explore our professional translation and interpretation services including document translation, interpretation, localization, and more." />
-        <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/transLuga/images/favicon.svg" type="image/svg+xml" />
       </Head>
 
       {/* Hero Section */}
