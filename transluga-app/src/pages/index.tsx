@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaLanguage, FaHandshake, FaGlobe, FaPhoneAlt, FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import TranslationDemo from '../components/TranslationDemo';
 
 export default function Home() {
   const [typedText, setTypedText] = useState('');
@@ -286,6 +287,18 @@ export default function Home() {
             <Link href="/services" className="inline-block bg-secondary-600 hover:bg-secondary-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">
               View All Services
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Translation Demo */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">Try Our Translation Tool</h2>
+          <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Experience our translation capabilities with this interactive demo featuring some of our African language specialties.</p>
+          
+          <div className="max-w-3xl mx-auto">
+            <TranslationDemo />
           </div>
         </div>
       </section>
