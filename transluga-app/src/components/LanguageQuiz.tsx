@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaCheck, FaTimes, FaRedo, FaShare, FaTwitter, FaFacebook, FaLinkedin } from 'react-icons/fa';
+import styles from './LanguageQuiz.module.css';
 
 interface QuizQuestion {
   id: number;
@@ -189,8 +190,7 @@ export default function LanguageQuiz() {
             </div>
             <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
               <div 
-                className={`h-full bg-primary-600`}
-                style={{ width: `${Math.round((score / quizQuestions.length) * 100)}%` }}
+                className={`${styles.progressBar} ${styles[`scoreProgress${score}`]}`}
               ></div>
             </div>
           </div>
@@ -253,8 +253,7 @@ export default function LanguageQuiz() {
       <div className="mb-6">
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-primary-600 rounded-full"
-            style={{ width: `${Math.round(((currentQuestion + 1) / quizQuestions.length) * 100)}%` }}
+            className={`${styles.progressBar} ${styles[`progressBar${Math.round(((currentQuestion + 1) / quizQuestions.length) * 10) * 10}`]}`}
           ></div>
         </div>
       </div>

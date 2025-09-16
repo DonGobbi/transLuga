@@ -1,0 +1,95 @@
+.progressBar {
+  height: 100%;
+  background-color: var(--color-primary-600);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.progressBar0 {
+  width: 0%;
+}
+
+.progressBar10 {
+  width: 10%;
+}
+
+.progressBar20 {
+  width: 20%;
+}
+
+.progressBar30 {
+  width: 30%;
+}
+
+.progressBar40 {
+  width: 40%;
+}
+
+.progressBar50 {
+  width: 50%;
+}
+
+.progressBar60 {
+  width: 60%;
+}
+
+.progressBar70 {
+  width: 70%;
+}
+
+.progressBar80 {
+  width: 80%;
+}
+
+.progressBar90 {
+  width: 90%;
+}
+
+.progressBar100 {
+  width: 100%;
+}
+
+/* Score progress classes */
+.scoreProgress0 {
+  width: 0%;
+}
+
+.scoreProgress1 {
+  width: 10%;
+}
+
+.scoreProgress2 {
+  width: 20%;
+}
+
+.scoreProgress3 {
+  width: 30%;
+}
+
+.scoreProgress4 {
+  width: 40%;
+}
+
+.scoreProgress5 {
+  width: 50%;
+}
+
+.scoreProgress6 {
+  width: 60%;
+}
+
+.scoreProgress7 {
+  width: 70%;
+}
+
+.scoreProgress8 {
+  width: 80%;
+}
+
+.scoreProgress9 {
+  width: 90%;
+}
+
+.scoreProgress10 {
+  width: 100%;
+}
