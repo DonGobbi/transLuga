@@ -90,6 +90,7 @@ We specialize in African languages including:
 
 For inquiries, please contact us:
 - **Phone**: +265 99 68 73 573
+- **Email**: dongobbinshombo@gmail.com
 - **Location**: Area 14, House Number 151, Lilongwe, Malawi
 
 ## License
