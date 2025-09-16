@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaCheck, FaAward, FaUsers, FaGlobe, FaMapMarkerAlt, FaLanguage, FaHandshake, FaPhoneAlt, FaQuoteLeft, FaArrowRight } from 'react-icons/fa';
+import LanguageMap from '../components/LanguageMap';
 
 export default function About() {
   const teamMembers = [
@@ -302,6 +303,15 @@ export default function About() {
               <h3 className="text-xl font-bold mb-3">Client Satisfaction</h3>
               <p className="text-gray-700">Our commitment to quality and cultural accuracy results in consistently high client satisfaction.</p>
             </div>
+          </div>
+          
+          {/* Interactive Language Map */}
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-16">
+            <h3 className="text-2xl font-bold mb-8 text-center">Interactive African Language Map</h3>
+            <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">
+              Explore the diverse African languages we specialize in by hovering over different regions of the continent.
+            </p>
+            <LanguageMap />
           </div>
           
           <div className="bg-white rounded-xl shadow-lg p-8">
