@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { FaBars, FaTimes, FaGlobe } from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,8 +27,13 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <FaGlobe className="h-8 w-8 text-primary-600 mr-2" />
-              <span className="text-2xl font-bold text-primary-800">Transluga</span>
+              <Image 
+                src="/images/transluga-logo.svg" 
+                alt="Transluga Logo" 
+                width={150} 
+                height={45} 
+                priority
+              />
             </Link>
           </div>
 

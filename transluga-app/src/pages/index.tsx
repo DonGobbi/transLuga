@@ -54,7 +54,7 @@ export default function Home() {
       <Head>
         <title>Transluga - Professional Translation & Interpretation Services</title>
         <meta name="description" content="Professional translation and interpretation services for businesses and individuals. Get accurate translations in multiple languages." />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
       </Head>
 
       {/* Hero Section with Background Image */}

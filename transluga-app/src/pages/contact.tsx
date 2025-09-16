@@ -120,7 +120,7 @@ export default function Contact() {
       <Head>
         <title>Contact Us | Transluga</title>
         <meta name="description" content="Contact Transluga for professional translation and interpretation services. Request a quote or get in touch with our team." />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
       </Head>
 
       {/* Hero Section */}
