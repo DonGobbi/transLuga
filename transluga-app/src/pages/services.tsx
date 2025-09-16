@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { FaLanguage, FaHandshake, FaGlobe, FaPhoneAlt, FaFileAlt, FaVideo, FaArrowRight, FaCheck, FaMapMarkerAlt, FaClosedCaptioning, FaFilm } from 'react-icons/fa';
+import { FaLanguage, FaHandshake, FaGlobe, FaPhoneAlt, FaFileAlt, FaVideo, FaArrowRight, FaCheck, FaMapMarkerAlt, FaClosedCaptioning, FaFilm, FaQuestionCircle } from 'react-icons/fa';
+import LanguageQuiz from '../components/LanguageQuiz';
 
 export default function Services() {
   const services = [
@@ -327,6 +328,25 @@ export default function Services() {
         </div>
       </section>
       
+      {/* Language Quiz Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="inline-block bg-secondary-100 px-4 py-2 rounded-lg text-secondary-800 font-medium mb-4">
+              <FaQuestionCircle className="inline mr-2" /> Test Your Knowledge
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">African Language Quiz</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              How much do you know about African languages? Test your knowledge with our interactive quiz and learn interesting facts about the diverse languages spoken across the African continent.
+            </p>
+          </div>
+          
+          <div className="max-w-3xl mx-auto">
+            <LanguageQuiz />
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-6">
