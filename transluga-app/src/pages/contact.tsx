@@ -138,7 +138,7 @@ export default function Contact() {
               <a href="#quote-form" className="bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 flex items-center">
                 Request a Quote <FaArrowRight className="ml-2" />
               </a>
-              <a href="tel:+15551234567" className="bg-white text-primary-800 hover:bg-gray-100 font-medium py-2 px-6 rounded-lg transition duration-300 flex items-center">
+              <a href="tel:+265996873573" className="bg-white text-primary-800 hover:bg-gray-100 font-medium py-2 px-6 rounded-lg transition duration-300 flex items-center">
                 <FaPhone className="mr-2" /> Call Us
               </a>
             </div>
