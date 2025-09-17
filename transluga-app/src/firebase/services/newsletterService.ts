@@ -30,9 +30,14 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
         // Just try to add the new subscriber directly
         const newsletterCollection = collection(db as Firestore, 'newsletter-subscribers');
         
-        // Add new subscriber with just the email field
-        // This matches the security rule: request.resource.data.keys().hasAll(['email'])
-        const docRef = await addDoc(newsletterCollection, { email });
+        // Add new subscriber with email and timestamp
+        // This will trigger the Cloud Function to send an email
+        const docRef = await addDoc(newsletterCollection, { 
+          email,
+          subscribedAt: new Date(),
+          acceptedPrivacyPolicy: true
+          // No skipEmailConfirmation flag, so emails will be sent
+        });
         
         console.log(`New subscriber added to Firebase: ${email}`);
         return docRef.id;

@@ -24,11 +24,11 @@ jobs:
           cd transluga-app
           npm ci
           
-      # Skip Firebase Functions dependencies for now
-      # - name: Install dependencies for functions
-      #   run: |
-      #     cd transluga-app/functions
-      #     npm ci
+      # Install Firebase Functions dependencies
+      - name: Install dependencies for functions
+        run: |
+          cd transluga-app/functions
+          npm ci
 
       - name: Create .env file and update Firebase config
         run: |
@@ -51,33 +51,29 @@ jobs:
           cd transluga-app
           npm run build
 
-      # Skip Firebase Functions build for now
-      # - name: Build Firebase Functions
-      #   run: |
-      #     cd transluga-app/functions
-      #     npm run build
+      # Build Firebase Functions
+      - name: Build Firebase Functions
+        run: |
+          cd transluga-app/functions
+          npm run build
 
-      # Skip Firebase Functions config for now to simplify deployment
-      # We'll add it back once basic deployment works
-      # - name: Set up Firebase Functions config
-      #   run: |
-      #     cd transluga-app
-      #     echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
-      #     export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/service-account.json"
-      #     npm install -g firebase-tools
-      #     firebase functions:config:set email.user="calvezgobbi@gmail.com" email.password="${{ secrets.EMAIL_PASSWORD }}" email.company="calvezgobbi@gmail.com" --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "${{ secrets.FIREBASE_TOKEN }}"
-      #     rm service-account.json
+      # Set up Firebase Functions config
+      - name: Set up Firebase Functions config
+        run: |
+          cd transluga-app
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/service-account.json"
+          npm install -g firebase-tools@11.30.0
+          firebase functions:config:set email.user="calvezgobbi@gmail.com" email.password="${{ secrets.EMAIL_PASSWORD }}" email.company="calvezgobbi@gmail.com" --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "${{ secrets.FIREBASE_TOKEN }}"
+          rm service-account.json
 
-      # Skip Firestore rules deployment since we're working with the existing rules
-
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0.7.1
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          channelId: live
-          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
-          entryPoint: './transluga-app'
-          target: transluga
-          expires: 7d
-          firebaseToolsVersion: '11.30.0'
+      # Deploy Firebase Functions and Hosting
+      - name: Deploy to Firebase
+        run: |
+          cd transluga-app
+          export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/service-account.json"
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
+          npx firebase-tools@11.30.0 deploy --only hosting,functions --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "${{ secrets.FIREBASE_TOKEN }}"
+          rm service-account.json
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
