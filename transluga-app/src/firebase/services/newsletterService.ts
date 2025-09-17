@@ -1,13 +1,14 @@
 import { db } from '../config';
-import { collection, addDoc, query, where, getDocs, Timestamp, Firestore, orderBy, limit } from 'firebase/firestore';
-import { handleFirebaseError, isFirebaseAvailable } from '../fallback';
+import { collection, addDoc, Firestore } from 'firebase/firestore';
+import { isFirebaseAvailable } from '../fallback';
 
-interface NewsletterSubscription {
-  email: string;
-  subscribedAt: Timestamp;
-  acceptedPrivacyPolicy: boolean;
-  skipEmailConfirmation?: boolean; // Optional flag to skip email confirmation
-}
+// We're not using this interface anymore since we're just adding the email field
+// interface NewsletterSubscription {
+//   email: string;
+//   subscribedAt: Timestamp;
+//   acceptedPrivacyPolicy: boolean;
+//   skipEmailConfirmation?: boolean; // Optional flag to skip email confirmation
+// }
 
 /**
  * Adds a new newsletter subscriber to Firestore if they don't already exist
@@ -25,33 +26,9 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     // Try to use Firebase only if available
     if (isFirebaseAvailable() && db) {
       try {
-        // First check if the email already exists
-        // This query must match the security rules exactly
+        // Skip checking for existing emails to avoid permission issues
+        // Just try to add the new subscriber directly
         const newsletterCollection = collection(db as Firestore, 'newsletter-subscribers');
-        
-        try {
-          // This query must match the security rules exactly:
-          // allow read: if request.query.limit <= 10 && 
-          //              request.query.orderBy == '__name__' && 
-          //              'email' in request.query.filters;
-          const emailQuery = query(
-            newsletterCollection,
-            where('email', '==', email),
-            orderBy('__name__'),
-            limit(10)
-          );
-          
-          const querySnapshot = await getDocs(emailQuery);
-          
-          // If email already exists, return 'exists'
-          if (!querySnapshot.empty) {
-            console.log(`Email ${email} already exists in the database`);
-            return 'exists';
-          }
-        } catch (queryError) {
-          console.warn('Error checking for existing email:', queryError);
-          // Continue with the subscription attempt even if the query fails
-        }
         
         // Add new subscriber with just the email field
         // This matches the security rule: request.resource.data.keys().hasAll(['email'])
