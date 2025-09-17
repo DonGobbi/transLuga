@@ -1,12 +1,20 @@
 /**
- * Newsletter subscription service using Formspree
- * @param email - The subscriber's email address
+ * Contact form submission service using Formspree
+ * @param formData - The contact form data
  * @returns Promise with a success message
  */
-export const addNewsletterSubscriber = async (email: string): Promise<string> => {
+export const submitContactForm = async (formData: {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  sourceLanguage: string;
+  targetLanguage: string;
+  message: string;
+}): Promise<string> => {
   try {
-    // Log the subscription attempt
-    console.log(`Newsletter subscription attempt for: ${email}`);
+    // Log the form submission attempt
+    console.log(`Contact form submission attempt for: ${formData.email}`, formData);
     
     // Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
     const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
@@ -19,9 +27,8 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        email,
-        subject: 'New Newsletter Subscription',
-        message: `New subscriber: ${email}`
+        ...formData,
+        subject: `New Contact Form Submission from ${formData.name}`
       })
     });
     
@@ -30,11 +37,11 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     }
     
     const result = await response.json();
-    console.log('Newsletter subscription successful:', result);
+    console.log('Contact form submission successful:', result);
     
     return 'success';
   } catch (error) {
-    console.error('Error submitting newsletter subscription:', error);
+    console.error('Error submitting contact form:', error);
     // Still return success to the user even if there's an error
     // This provides a good user experience while you debug any issues
     return 'success';

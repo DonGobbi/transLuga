@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaGlobe, FaLanguage, FaArrowRight, FaCheck, FaExclamationCircle } from 'react-icons/fa';
-import { submitContactForm } from '../services/mockContactService';
+import { submitContactForm } from '../services/formspreeContactService';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
