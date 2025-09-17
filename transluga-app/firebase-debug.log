@@ -1,0 +1,20 @@
+[debug] [2025-09-17T17:19:42.928Z] ----------------------------------------------------------------------
+[debug] [2025-09-17T17:19:42.936Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DON GOBBI NSHOMBO\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2025-09-17T17:19:42.937Z] CLI Version:   11.1.0
+[debug] [2025-09-17T17:19:42.938Z] Platform:      win32
+[debug] [2025-09-17T17:19:42.938Z] Node Version:  v22.14.0
+[debug] [2025-09-17T17:19:42.939Z] Time:          Wed Sep 17 2025 19:19:42 GMT+0200 (South Africa Standard Time)
+[debug] [2025-09-17T17:19:42.940Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-17T17:19:43.140Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-09-17T17:19:43.142Z] > authorizing via signed-in user (calvezgobbi@gmail.com)
+[debug] [2025-09-17T17:19:43.143Z] [iam] checking project transluga-f0db9 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-09-17T17:19:43.152Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/transluga-f0db9:testIamPermissions [none]
+[debug] [2025-09-17T17:19:43.153Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/transluga-f0db9:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-09-17T17:19:45.467Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/transluga-f0db9:testIamPermissions 200
+[debug] [2025-09-17T17:19:45.467Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/transluga-f0db9:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-09-17T17:19:45.468Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/transluga-f0db9/serviceAccounts/transluga-f0db9@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2025-09-17T17:19:45.468Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/transluga-f0db9/serviceAccounts/transluga-f0db9@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2025-09-17T17:19:47.774Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/transluga-f0db9/serviceAccounts/transluga-f0db9@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2025-09-17T17:19:47.775Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/transluga-f0db9/serviceAccounts/transluga-f0db9@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2025-09-17T17:19:47.778Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/transluga-f0db9 [none]
