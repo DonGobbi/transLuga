@@ -76,6 +76,6 @@ jobs:
           channelId: live
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
           entryPoint: './transluga-app'
-          target: hosting
+          target: transluga
           expires: 7d
           firebaseToolsVersion: '11.30.0'

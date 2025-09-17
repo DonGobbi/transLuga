@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "transluga",
     "public": "out",
     "ignore": [
       "firebase.json",

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "transluga-f0db9"
+  },
+  "targets": {
+    "transluga-f0db9": {
+      "hosting": {
+        "transluga": [
+          "transluga-f0db9"
+        ]
+      }
+    }
   }
 }
