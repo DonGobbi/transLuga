@@ -1,12 +1,13 @@
 name: Deploy Next.js site to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["master"]
-
-  # Allows you to run this workflow manually from the Actions tab
+  # Only run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: 'Confirm deployment to GitHub Pages'
+        required: true
+        default: 'yes'
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
