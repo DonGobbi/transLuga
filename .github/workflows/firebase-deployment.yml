@@ -74,7 +74,10 @@ jobs:
       - name: Deploy Firestore Rules
         run: |
           cd transluga-app
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/service-account.json"
           firebase deploy --only firestore:rules --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "${{ secrets.FIREBASE_TOKEN }}"
+          rm service-account.json
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
