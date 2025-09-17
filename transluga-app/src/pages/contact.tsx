@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaGlobe, FaLanguage, FaArrowRight, FaCheck } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaGlobe, FaLanguage, FaArrowRight, FaCheck, FaExclamationCircle } from 'react-icons/fa';
+import { submitContactForm } from '../firebase/services/contactService';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -31,12 +32,9 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // In a real application, you would send this data to your backend
-    // For now, we'll just simulate a successful submission
-    
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Submit form data to Firebase
+      await submitContactForm(formData);
       
       setFormStatus({
         submitted: true,
@@ -55,6 +53,7 @@ export default function Contact() {
         message: '',
       });
     } catch (error) {
+      console.error('Error submitting contact form:', error);
       setFormStatus({
         submitted: false,
         error: true,
@@ -238,7 +237,14 @@ export default function Contact() {
                 </div>
               ) : formStatus.error ? (
                 <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
-                  <p className="font-medium">{formStatus.message}</p>
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <FaExclamationCircle className="h-5 w-5 text-red-500" />
+                    </div>
+                    <div className="ml-3">
+                      <p className="font-medium">{formStatus.message}</p>
+                    </div>
+                  </div>
                 </div>
               ) : null}
               

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { FaPaperPlane, FaCheckCircle } from 'react-icons/fa';
+import { FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { addNewsletterSubscriber } from '../firebase/services/newsletterService';
 
 interface NewsletterSignupProps {
   title?: string;
@@ -19,7 +20,7 @@ export default function NewsletterSignup({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -29,11 +30,12 @@ export default function NewsletterSignup({
       return;
     }
     
-    // Simulate API call
     setIsLoading(true);
     
-    // In a real implementation, you would send this to your backend
-    setTimeout(() => {
+    try {
+      // Add subscriber to Firebase
+      await addNewsletterSubscriber(email);
+      
       setIsLoading(false);
       setIsSubmitted(true);
       // Reset form after successful submission
@@ -43,7 +45,11 @@ export default function NewsletterSignup({
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    }, 1000);
+    } catch (err) {
+      setIsLoading(false);
+      setError('Failed to subscribe. Please try again later.');
+      console.error('Newsletter subscription error:', err);
+    }
   };
   
   const textColorClass = darkMode ? 'text-white' : 'text-gray-800';
