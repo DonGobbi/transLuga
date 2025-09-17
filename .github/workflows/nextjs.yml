@@ -36,6 +36,45 @@ jobs:
         uses: actions/configure-pages@v4
       - name: Install dependencies
         run: cd transluga-app && npm ci
+      - name: Create Firebase config
+        run: |
+          cd transluga-app
+          # Create a simple Firebase config with dummy values for GitHub Pages
+          # This is just to make the build pass - the actual Firebase functionality won't work on GitHub Pages
+          cat > src/firebase/config.ts << EOL
+          // Firebase configuration - GitHub Pages version (limited functionality)
+          import { initializeApp, FirebaseApp } from 'firebase/app';
+          import { getFirestore, Firestore } from 'firebase/firestore';
+
+          // Dummy configuration for GitHub Pages
+          // Note: Firebase functionality is limited on GitHub Pages
+          const firebaseConfig = {
+            apiKey: "dummy-api-key-for-github-pages",
+            authDomain: "transluga-f0db9.firebaseapp.com",
+            projectId: "transluga-f0db9",
+            storageBucket: "transluga-f0db9.firebasestorage.app",
+            messagingSenderId: "dummy-sender-id",
+            appId: "dummy-app-id"
+          };
+
+          // Initialize Firebase only in browser environment
+          let app: FirebaseApp | undefined;
+          let db: Firestore | undefined;
+
+          if (typeof window !== 'undefined') {
+            try {
+              app = initializeApp(firebaseConfig);
+              db = getFirestore(app);
+              console.log('Firebase initialized with dummy config for GitHub Pages');
+            } catch (error) {
+              console.error('Error initializing Firebase:', error);
+            }
+          } else {
+            console.log('Firebase not initialized in SSR context');
+          }
+
+          export { db };
+          EOL
       - name: Build with Next.js
         run: cd transluga-app && npm run build
       - name: Create .nojekyll file
