@@ -50,17 +50,28 @@ let db: Firestore | undefined;
 try {
   const firebaseConfig = getFirebaseConfig();
   
+  // Add debugging for deployed environment
+  console.log('Environment check:', {
+    isProduction: process.env.NODE_ENV === 'production',
+    hasWindow: typeof window !== 'undefined',
+    hasApiKey: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    hasAuthDomain: !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    hasProjectId: !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  });
+  
   // Check if all required config values are present
   const requiredConfigKeys: (keyof FirebaseConfig)[] = ['apiKey', 'authDomain', 'projectId'];
   const missingKeys = requiredConfigKeys.filter(key => !firebaseConfig[key]);
   
   if (missingKeys.length > 0) {
     console.error(`Firebase initialization failed. Missing config keys: ${missingKeys.join(', ')}`);
+    // Log the config for debugging (without exposing actual values)
+    console.error('Config keys available:', Object.keys(firebaseConfig).filter(key => !!firebaseConfig[key as keyof FirebaseConfig]));
   } else {
     // Initialize Firebase
     app = initializeApp(firebaseConfig as any);
     db = getFirestore(app);
-    console.log('Firebase initialized successfully');
+    console.log('Firebase initialized successfully with project:', firebaseConfig.projectId);
   }
 } catch (error) {
   console.error('Error initializing Firebase:', error);

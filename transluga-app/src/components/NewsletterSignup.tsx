@@ -34,6 +34,7 @@ export default function NewsletterSignup({
     
     try {
       // Add subscriber to Firebase
+      console.log('Attempting to subscribe with email:', email);
       await addNewsletterSubscriber(email);
       
       setIsLoading(false);
@@ -41,13 +42,17 @@ export default function NewsletterSignup({
       // Reset form after successful submission
       setEmail('');
       
+      console.log('Newsletter subscription successful');
+      
       // Reset success message after a few seconds
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
     } catch (err) {
       setIsLoading(false);
-      setError('Failed to subscribe. Please try again later.');
+      // Provide more specific error message if available
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Failed to subscribe: ${errorMessage}`);
       console.error('Newsletter subscription error:', err);
     }
   };

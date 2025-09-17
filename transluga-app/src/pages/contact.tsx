@@ -33,9 +33,11 @@ export default function Contact() {
     e.preventDefault();
     
     try {
+      console.log('Attempting to submit contact form');
       // Submit form data to Firebase
       await submitContactForm(formData);
       
+      console.log('Contact form submitted successfully');
       setFormStatus({
         submitted: true,
         error: false,
@@ -53,11 +55,12 @@ export default function Contact() {
         message: '',
       });
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('Error submitting contact form:', error);
       setFormStatus({
         submitted: false,
         error: true,
-        message: 'There was an error submitting your request. Please try again.',
+        message: `There was an error submitting your request: ${errorMessage}`,
       });
     }
   };
