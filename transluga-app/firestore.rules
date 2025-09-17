@@ -10,8 +10,13 @@ service cloud.firestore {
         // Basic email format validation
         request.resource.data.email is string;
       
-      // Only allow admin reads
-      allow read, update, delete: if false;
+      // Allow querying by email to check for duplicates
+      allow read: if request.query.limit <= 10 && 
+                   request.query.orderBy == '__name__' && 
+                   'email' in request.query.filters;
+      
+      // Only allow admin updates and deletes
+      allow update, delete: if false;
     }
     
     // Contact form submissions collection

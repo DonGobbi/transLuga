@@ -20,7 +20,11 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     
     // Check if email already exists in the collection
     const newsletterCollection = collection(db as Firestore, 'newsletter-subscribers');
-    const emailQuery = query(newsletterCollection, where('email', '==', email));
+    // Use a query that matches our security rules
+    const emailQuery = query(
+      newsletterCollection, 
+      where('email', '==', email)
+    );
     const querySnapshot = await getDocs(emailQuery);
     
     // If email already exists, return 'exists'
