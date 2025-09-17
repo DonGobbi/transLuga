@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   output: 'export',
   basePath: '/transLuga',
+  trailingSlash: true,
   images: {
     unoptimized: true,
   },
