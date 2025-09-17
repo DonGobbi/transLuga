@@ -3,9 +3,17 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // Newsletter subscribers collection
     match /newsletter-subscribers/{subscriberId} {
-      // Allow all operations for newsletter subscribers
-      // This is a temporary solution to fix the permission issues
-      allow create, read: if true;
+      // Allow creation with minimal validation
+      allow create: if 
+        // Ensure email field exists
+        request.resource.data.keys().hasAll(['email']) &&
+        // Basic email format validation
+        request.resource.data.email is string;
+      
+      // Allow querying by email to check for duplicates
+      allow read: if request.query.limit <= 10 && 
+                   request.query.orderBy == '__name__' && 
+                   'email' in request.query.filters;
       
       // Only allow admin updates and deletes
       allow update, delete: if false;
@@ -13,11 +21,16 @@ service cloud.firestore {
     
     // Contact form submissions collection
     match /contact-submissions/{submissionId} {
-      // Allow creation without restrictions
-      // This is a temporary solution to fix the permission issues
-      allow create: if true;
+      // Allow creation with minimal validation
+      allow create: if 
+        // Ensure required fields exist
+        request.resource.data.keys().hasAll(['name', 'email', 'message']) &&
+        // Basic validation
+        request.resource.data.name is string &&
+        request.resource.data.email is string &&
+        request.resource.data.message is string;
       
-      // Only allow admin reads, updates, and deletes
+      // Only allow admin reads
       allow read, update, delete: if false;
     }
     

@@ -25,12 +25,36 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     // Try to use Firebase only if available
     if (isFirebaseAvailable() && db) {
       try {
-        // Add new subscriber directly without any checks
-        // This is the simplest possible implementation to avoid any security rule issues
+        // First check if the email already exists
+        // This query must match the security rules exactly
         const newsletterCollection = collection(db as Firestore, 'newsletter-subscribers');
         
-        // Create a simple document with just the email
-        // No additional fields that might cause issues
+        try {
+          // This query must match the security rules exactly:
+          // allow read: if request.query.limit <= 10 && 
+          //              request.query.orderBy == '__name__' && 
+          //              'email' in request.query.filters;
+          const emailQuery = query(
+            newsletterCollection,
+            where('email', '==', email),
+            orderBy('__name__'),
+            limit(10)
+          );
+          
+          const querySnapshot = await getDocs(emailQuery);
+          
+          // If email already exists, return 'exists'
+          if (!querySnapshot.empty) {
+            console.log(`Email ${email} already exists in the database`);
+            return 'exists';
+          }
+        } catch (queryError) {
+          console.warn('Error checking for existing email:', queryError);
+          // Continue with the subscription attempt even if the query fails
+        }
+        
+        // Add new subscriber with just the email field
+        // This matches the security rule: request.resource.data.keys().hasAll(['email'])
         const docRef = await addDoc(newsletterCollection, { email });
         
         console.log(`New subscriber added to Firebase: ${email}`);
