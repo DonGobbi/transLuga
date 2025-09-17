@@ -16,8 +16,8 @@ export const submitContactForm = async (formData: {
     // Log the form submission attempt
     console.log(`Contact form submission attempt for: ${formData.email}`, formData);
     
-    // Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
-    const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+    // Your Formspree contact form endpoint
+    const formspreeEndpoint = 'https://formspree.io/f/meolbvwe';
     
     // Send the data to Formspree
     const response = await fetch(formspreeEndpoint, {
