@@ -1,8 +1,6 @@
-// No Firebase imports - completely standalone implementation
-
 /**
  * Simple mock implementation for newsletter subscription
- * This bypasses Firestore completely to avoid permission issues
+ * This is completely independent of Firebase to avoid any permission issues
  * @param email - The subscriber's email address
  * @returns Promise with a success message
  */
