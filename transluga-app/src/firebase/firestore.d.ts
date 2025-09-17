@@ -17,6 +17,9 @@ declare module 'firebase/firestore' {
     empty: boolean;
   }>;
   
+  export function query(collectionRef: any, ...queryConstraints: any[]): any;
+  export function where(fieldPath: string, opStr: string, value: any): any;
+  
   export class Timestamp {
     static now(): Timestamp;
     seconds: number;

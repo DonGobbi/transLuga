@@ -19,6 +19,7 @@ export default function NewsletterSignup({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('Thank you for subscribing! We\'ve sent a confirmation email to your inbox.');
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,12 +36,21 @@ export default function NewsletterSignup({
     try {
       // Add subscriber to Firebase
       console.log('Attempting to subscribe with email:', email);
-      await addNewsletterSubscriber(email);
+      const result = await addNewsletterSubscriber(email);
       
       setIsLoading(false);
       setIsSubmitted(true);
-      // Reset form after successful submission
-      setEmail('');
+      
+      // Handle existing subscriber
+      if (result === 'exists') {
+        // Show a different message for existing subscribers
+        setSuccessMessage('You are already subscribed to our newsletter!');
+      } else {
+        // New subscriber
+        setSuccessMessage('Thank you for subscribing! We\'ve sent a confirmation email to your inbox.');
+        // Reset form after successful submission
+        setEmail('');
+      }
       
       console.log('Newsletter subscription successful');
       
@@ -73,7 +83,7 @@ export default function NewsletterSignup({
         <div className="flex flex-col items-center justify-center py-4">
           <FaCheckCircle className="text-green-500 text-4xl mb-3" />
           <p className={`${textColorClass} text-center`}>
-            Thank you for subscribing! We'll keep you updated with the latest news and offers.
+            {successMessage}
           </p>
         </div>
       ) : (
