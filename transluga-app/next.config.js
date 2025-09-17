@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: 'export',
-  basePath: '/transLuga',
+  // Removed basePath for Firebase hosting
   images: {
     unoptimized: true,
   },
