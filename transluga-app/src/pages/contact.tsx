@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaGlobe, FaLanguage, FaArrowRight, FaCheck, FaExclamationCircle } from 'react-icons/fa';
-import { submitContactForm } from '../services/formspreeContactService';
+// Using Formspree directly in the component
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -43,8 +43,29 @@ export default function Contact() {
     
     try {
       console.log('Attempting to submit contact form');
-      // Submit form data to Firebase
-      await submitContactForm(formData);
+      
+      // Use Formspree directly
+      const formspreeEndpoint = 'https://formspree.io/f/meolbvwe';
+      
+      // Create form data
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+      
+      // Submit to Formspree
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        body: formDataToSend,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const responseData = await response.json();
+        throw new Error(`Formspree error: ${JSON.stringify(responseData)}`);
+      }
       
       console.log('Contact form submitted successfully');
       setFormStatus({

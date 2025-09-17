@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import { addNewsletterSubscriber } from '../services/mockNewsletterService';
 
 interface NewsletterSignupProps {
   title?: string;
@@ -21,6 +20,8 @@ export default function NewsletterSignup({
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('Thank you for subscribing! We\'ve sent a confirmation email to your inbox.');
   
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -34,32 +35,37 @@ export default function NewsletterSignup({
     setIsLoading(true);
     
     try {
-      // Add subscriber to our mock service
       console.log('Attempting to subscribe with email:', email);
       
-      // Call the simplified newsletter service
-      await addNewsletterSubscriber(email);
+      const formspreeEndpoint = 'https://formspree.io/f/xandgakg';
       
-      // Always show success
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('message', 'Newsletter subscription');
+      
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setIsLoading(false);
+        setIsSubmitted(true);
+        setSuccessMessage('Thank you for subscribing to our newsletter!');
+        setEmail('');
+        console.log('Newsletter subscription processed successfully');
+      } else {
+        const responseData = await response.json();
+        console.error('Formspree error:', responseData);
+        throw new Error('Formspree submission failed');
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
       setIsLoading(false);
-      setIsSubmitted(true);
-      setSuccessMessage('Thank you for subscribing to our newsletter!');
-      setEmail('');
-      
-      console.log('Newsletter subscription processed successfully');
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
-    } catch (err) {
-      // This should never happen with our simplified implementation
-      setIsLoading(false);
-      console.error('Unexpected error during newsletter subscription:', err);
-      
-      // Still show success to the user
-      setIsSubmitted(true);
-      setSuccessMessage('Thank you for your interest in our newsletter!');
+      setError('Something went wrong. Please try again later.');
       setEmail('');
     }
   };
