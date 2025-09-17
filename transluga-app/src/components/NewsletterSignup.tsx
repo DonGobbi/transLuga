@@ -104,7 +104,7 @@ export default function NewsletterSignup({
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <label htmlFor="privacy-policy" className={`ml-2 block text-sm ${subtitleColorClass}`}>
-              I agree to receive emails from Transluga and accept the <a href="/privacy-policy" className="text-primary-600 hover:underline">privacy policy</a>.
+              I agree to receive emails from Transluga and accept the <a href="/transLuga/privacy-policy" className="text-primary-600 hover:underline">privacy policy</a>.
             </label>
           </div>
           

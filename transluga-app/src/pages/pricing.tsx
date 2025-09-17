@@ -136,7 +136,7 @@ export default function Pricing() {
       <Head>
         <title>Pricing | Transluga</title>
         <meta name="description" content="View our transparent pricing for translation and interpretation services. Get a custom quote for your specific needs." />
-        <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/transLuga/images/favicon.svg" type="image/svg+xml" />
       </Head>
 
       {/* Hero Section */}
