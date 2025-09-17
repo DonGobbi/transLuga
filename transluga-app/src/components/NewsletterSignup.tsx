@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import { addNewsletterSubscriber } from '../services/mockNewsletterService';
+import { addNewsletterSubscriber } from '../firebase/services/newsletterService';
 
 interface NewsletterSignupProps {
   title?: string;
