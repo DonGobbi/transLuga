@@ -19,6 +19,8 @@ declare module 'firebase/firestore' {
   
   export function query(collectionRef: any, ...queryConstraints: any[]): any;
   export function where(fieldPath: string, opStr: string, value: any): any;
+  export function orderBy(fieldPath: string, directionStr?: 'asc' | 'desc'): any;
+  export function limit(limit: number): any;
   
   export class Timestamp {
     static now(): Timestamp;

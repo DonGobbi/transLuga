@@ -1,5 +1,5 @@
 import { db } from '../config';
-import { collection, addDoc, query, where, getDocs, Timestamp, Firestore } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, Timestamp, Firestore, orderBy, limit } from 'firebase/firestore';
 
 interface NewsletterSubscription {
   email: string;
@@ -23,7 +23,9 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     // Use a query that matches our security rules
     const emailQuery = query(
       newsletterCollection, 
-      where('email', '==', email)
+      where('email', '==', email),
+      orderBy('__name__'),
+      limit(10)
     );
     const querySnapshot = await getDocs(emailQuery);
     
