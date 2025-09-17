@@ -19,6 +19,7 @@ export default function Contact() {
     submitted: false,
     error: false,
     message: '',
+    isLoading: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -32,6 +33,14 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Set loading state
+    setFormStatus({
+      submitted: false,
+      error: false,
+      message: '',
+      isLoading: true,
+    });
+    
     try {
       console.log('Attempting to submit contact form');
       // Submit form data to Firebase
@@ -42,6 +51,7 @@ export default function Contact() {
         submitted: true,
         error: false,
         message: 'Thank you! Your message has been received. We will contact you shortly.',
+        isLoading: false,
       });
       
       // Reset form
@@ -54,6 +64,15 @@ export default function Contact() {
         targetLanguage: '',
         message: '',
       });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setFormStatus(prev => ({
+          ...prev,
+          submitted: false,
+          message: ''
+        }));
+      }, 5000);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('Error submitting contact form:', error);
@@ -61,6 +80,7 @@ export default function Contact() {
         submitted: false,
         error: true,
         message: `There was an error submitting your request: ${errorMessage}`,
+        isLoading: false,
       });
     }
   };
@@ -426,9 +446,22 @@ export default function Contact() {
                 <div className="flex items-center">
                   <button
                     type="submit"
-                    className="bg-secondary-600 hover:bg-secondary-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-md hover:shadow-lg flex items-center"
+                    disabled={formStatus.isLoading}
+                    className={`bg-secondary-600 hover:bg-secondary-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-md hover:shadow-lg flex items-center ${formStatus.isLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
                   >
-                    Submit Request <FaArrowRight className="ml-2" />
+                    {formStatus.isLoading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Submit Request <FaArrowRight className="ml-2" />
+                      </>
+                    )}
                   </button>
                   <p className="ml-4 text-sm text-gray-500">* Required fields</p>
                 </div>
