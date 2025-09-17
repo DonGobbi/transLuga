@@ -68,7 +68,17 @@ jobs:
       #     firebase functions:config:set email.user="calvezgobbi@gmail.com" email.password="${{ secrets.EMAIL_PASSWORD }}" email.company="calvezgobbi@gmail.com" --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "${{ secrets.FIREBASE_TOKEN }}"
       #     rm service-account.json
 
-      - name: Deploy to Firebase Hosting only
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools@11.30.0
+
+      - name: Deploy Firestore Rules
+        run: |
+          cd transluga-app
+          firebase deploy --only firestore:rules --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "${{ secrets.FIREBASE_TOKEN }}"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0.7.1
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
