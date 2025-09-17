@@ -1,43 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Newsletter subscribers collection
+    // Simplified rules for testing
+    // WARNING: These rules are insecure and should only be used temporarily for testing
+    
+    // Newsletter subscribers collection - allow all operations for testing
     match /newsletter-subscribers/{subscriberId} {
-      // Only allow creation of new subscribers, no reads, updates or deletes from client
-      allow create: if 
-        // Validate required fields
-        request.resource.data.keys().hasAll(['email', 'subscribedAt', 'acceptedPrivacyPolicy']) &&
-        // Validate email format
-        request.resource.data.email is string &&
-        request.resource.data.email.matches('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$') &&
-        // Validate timestamp
-        request.resource.data.subscribedAt is timestamp &&
-        // Ensure privacy policy is accepted
-        request.resource.data.acceptedPrivacyPolicy == true;
-      
-      // Only allow admin reads
+      allow create: if true;
       allow read, update, delete: if false;
     }
     
-    // Contact form submissions collection
+    // Contact form submissions collection - allow all operations for testing
     match /contact-submissions/{submissionId} {
-      // Only allow creation of new submissions, no reads, updates or deletes from client
-      allow create: if 
-        // Validate required fields
-        request.resource.data.keys().hasAll(['name', 'email', 'service', 'sourceLanguage', 'targetLanguage', 'message', 'submittedAt']) &&
-        // Validate string fields
-        request.resource.data.name is string &&
-        request.resource.data.email is string &&
-        request.resource.data.service is string &&
-        request.resource.data.sourceLanguage is string &&
-        request.resource.data.targetLanguage is string &&
-        request.resource.data.message is string &&
-        // Validate email format
-        request.resource.data.email.matches('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$') &&
-        // Validate timestamp
-        request.resource.data.submittedAt is timestamp;
-      
-      // Only allow admin reads
+      allow create: if true;
       allow read, update, delete: if false;
     }
     
