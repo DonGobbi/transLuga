@@ -49,6 +49,12 @@ export const sendNewsletterConfirmation = functions.firestore
       return null;
     }
     
+    // Check if we should skip email confirmation
+    if (subscriberData.skipEmailConfirmation) {
+      console.log(`Skipping email confirmation for ${subscriberData.email} as requested`);
+      return null;
+    }
+    
     const subscriberEmail = subscriberData.email;
     const transporter = getTransporter();
     const COMPANY_EMAIL = getCompanyEmail();
