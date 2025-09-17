@@ -9,7 +9,7 @@ export default function CaseStudiesPage() {
       <Head>
         <title>Case Studies | Transluga</title>
         <meta name="description" content="Explore our successful translation and interpretation projects across various industries. See how we've helped clients overcome language barriers." />
-        <link rel="icon" href="/transLuga/images/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
       </Head>
 
       {/* Hero Section */}

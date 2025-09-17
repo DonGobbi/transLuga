@@ -71,7 +71,7 @@ export default function About() {
       <Head>
         <title>About Us | Transluga</title>
         <meta name="description" content="Learn about Transluga, our mission, values, and the team behind our professional translation and interpretation services." />
-        <link rel="icon" href="/transLuga/images/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
       </Head>
 
       {/* Hero Section */}
