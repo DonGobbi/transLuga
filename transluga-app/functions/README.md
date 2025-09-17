@@ -22,7 +22,7 @@ npm install
 You need to set up environment variables for the email service:
 
 ```bash
-firebase functions:config:set email.user="your-email@gmail.com" email.password="your-app-password" email.company="info@transluga.com"
+firebase functions:config:set email.user="calvezgobbi@gmail.com" email.password="your-app-password" email.company="calvezgobbi@gmail.com"
 ```
 
 **Note**: For Gmail, you'll need to use an "App Password" rather than your regular password. You can generate one in your Google Account settings.

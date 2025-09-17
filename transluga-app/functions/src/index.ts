@@ -31,9 +31,9 @@ const getTransporter = () => {
 // Company email to receive notifications
 const getCompanyEmail = () => {
   try {
-    return functions.config().email?.company || 'info@transluga.com';
+    return functions.config().email?.company || 'calvezgobbi@gmail.com';
   } catch (error) {
-    return 'info@transluga.com';
+    return 'calvezgobbi@gmail.com';
   }
 };
 

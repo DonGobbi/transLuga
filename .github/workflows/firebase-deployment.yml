@@ -17,9 +17,14 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install dependencies
+      - name: Install dependencies for web app
         run: |
           cd transluga-app
+          npm ci
+          
+      - name: Install dependencies for functions
+        run: |
+          cd transluga-app/functions
           npm ci
 
       - name: Create .env file and update Firebase config
@@ -43,7 +48,20 @@ jobs:
           cd transluga-app
           npm run build
 
-      - name: Deploy to Firebase
+      - name: Build Firebase Functions
+        run: |
+          cd transluga-app/functions
+          npm run build
+
+      - name: Set up Firebase Functions config
+        run: |
+          cd transluga-app
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/service-account.json"
+          npx firebase-tools functions:config:set email.user="calvezgobbi@gmail.com" email.password="${{ secrets.EMAIL_PASSWORD }}" email.company="calvezgobbi@gmail.com" --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "${{ secrets.FIREBASE_TOKEN }}"
+          rm service-account.json
+
+      - name: Deploy to Firebase Hosting and Functions
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -51,3 +69,4 @@ jobs:
           channelId: live
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
           entryPoint: './transluga-app'
+          targets: hosting,functions
