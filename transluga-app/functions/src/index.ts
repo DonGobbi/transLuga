@@ -1,4 +1,6 @@
 import * as functions from 'firebase-functions';
+// Explicitly import v1 namespace to avoid confusion with v2
+import { firestore as firestoreV1 } from 'firebase-functions/v1';
 import * as admin from 'firebase-admin';
 import * as nodemailer from 'nodemailer';
 
@@ -40,7 +42,7 @@ const getCompanyEmail = () => {
 /**
  * Send confirmation email to new newsletter subscribers
  */
-export const sendNewsletterConfirmation = functions.firestore
+export const sendNewsletterConfirmation = firestoreV1
   .document('newsletter-subscribers/{subscriberId}')
   .onCreate(async (snap, context) => {
     const subscriberData = snap.data();
@@ -110,7 +112,7 @@ export const sendNewsletterConfirmation = functions.firestore
 /**
  * Send confirmation email for contact form submissions
  */
-export const sendContactConfirmation = functions.firestore
+export const sendContactConfirmation = firestoreV1
   .document('contact-submissions/{submissionId}')
   .onCreate(async (snap, context) => {
     const submissionData = snap.data();
