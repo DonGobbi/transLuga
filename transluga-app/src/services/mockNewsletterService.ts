@@ -8,8 +8,8 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     // Log the subscription attempt
     console.log(`Newsletter subscription attempt for: ${email}`);
     
-    // Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
-    const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+    // Your Formspree newsletter form endpoint
+    const formspreeEndpoint = 'https://formspree.io/f/xandgakg';
     
     // Send the data to Formspree
     const response = await fetch(formspreeEndpoint, {
