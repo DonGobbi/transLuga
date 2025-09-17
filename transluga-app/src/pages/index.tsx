@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaLanguage, FaHandshake, FaGlobe, FaPhoneAlt, FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaCheck } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import TranslationDemo from '../components/TranslationDemo';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import NewsletterSignup from '../components/NewsletterSignup';
@@ -14,14 +14,16 @@ export default function Home() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
   
-  const textsToType = [
+  // Use useMemo to prevent the array from being recreated on each render
+  const textsToType = useMemo(() => [
     'CUSTOMERS',
     'BUSINESS',
     'BRAND',
     'PARTNERS'
-  ];
+  ], []);
   
-  const testimonials = [
+  // Use useMemo for testimonials to prevent unnecessary re-renders
+  const testimonials = useMemo(() => [
     {
       id: 1,
       quote: "Our partnership with Transluga allowed us to scale up and do virtual application prep that led to over 2200 TPS applications being filed in Colorado in under 6 months - totally free to the applicants. The scale and speed of the project would not have been possible without Transluga's quick, accurate, and professional translations.",
@@ -40,7 +42,7 @@ export default function Home() {
       author: "Jean-Pierre Mutombo",
       company: "International Aid Organization"
     }
-  ];
+  ], []);
   
   useEffect(() => {
     const currentText = textsToType[currentTextIndex];
