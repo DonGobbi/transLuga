@@ -1,18 +1,31 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Simplified rules for testing
-    // WARNING: These rules are insecure and should only be used temporarily for testing
-    
-    // Newsletter subscribers collection - allow all operations for testing
+    // Newsletter subscribers collection
     match /newsletter-subscribers/{subscriberId} {
-      allow create: if true;
+      // Allow creation with minimal validation
+      allow create: if 
+        // Ensure email field exists
+        request.resource.data.keys().hasAll(['email']) &&
+        // Basic email format validation
+        request.resource.data.email is string;
+      
+      // Only allow admin reads
       allow read, update, delete: if false;
     }
     
-    // Contact form submissions collection - allow all operations for testing
+    // Contact form submissions collection
     match /contact-submissions/{submissionId} {
-      allow create: if true;
+      // Allow creation with minimal validation
+      allow create: if 
+        // Ensure required fields exist
+        request.resource.data.keys().hasAll(['name', 'email', 'message']) &&
+        // Basic validation
+        request.resource.data.name is string &&
+        request.resource.data.email is string &&
+        request.resource.data.message is string;
+      
+      // Only allow admin reads
       allow read, update, delete: if false;
     }
     
