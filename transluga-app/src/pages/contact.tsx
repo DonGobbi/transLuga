@@ -30,80 +30,18 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Using a pure HTML form approach for Formspree
+  const handleSubmit = (e: React.FormEvent) => {
+    // We're using the native form submission, so we don't need to prevent default
+    // The form will be submitted directly to Formspree
     
-    // Set loading state
+    // Just for UX, set loading state
     setFormStatus({
       submitted: false,
       error: false,
       message: '',
       isLoading: true,
     });
-    
-    try {
-      console.log('Attempting to submit contact form');
-      
-      // Use Formspree directly
-      const formspreeEndpoint = 'https://formspree.io/f/meolbvwe';
-      
-      // Create form data
-      const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
-      
-      // Submit to Formspree
-      const response = await fetch(formspreeEndpoint, {
-        method: 'POST',
-        body: formDataToSend,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const responseData = await response.json();
-        throw new Error(`Formspree error: ${JSON.stringify(responseData)}`);
-      }
-      
-      console.log('Contact form submitted successfully');
-      setFormStatus({
-        submitted: true,
-        error: false,
-        message: 'Thank you! Your message has been received. We will contact you shortly.',
-        isLoading: false,
-      });
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        service: '',
-        sourceLanguage: '',
-        targetLanguage: '',
-        message: '',
-      });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setFormStatus(prev => ({
-          ...prev,
-          submitted: false,
-          message: ''
-        }));
-      }, 5000);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Error submitting contact form:', error);
-      setFormStatus({
-        submitted: false,
-        error: true,
-        message: `There was an error submitting your request: ${errorMessage}`,
-        isLoading: false,
-      });
-    }
   };
 
   const services = [
@@ -292,7 +230,7 @@ export default function Contact() {
                 </div>
               ) : null}
               
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form action="https://formspree.io/f/meolbvwe" method="POST" className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
@@ -451,6 +389,11 @@ export default function Contact() {
                       placeholder="Please describe your project, including word count, timeline, and any specific requirements. If you need African language services, please specify which languages."
                       required
                     ></textarea>
+                    
+                    {/* Honeypot field to prevent spam */}
+                    <div className="hidden">
+                      <input type="text" name="_gotcha" tabIndex={-1} aria-hidden="true" />
+                    </div>
                   </div>
                 </div>
                 
