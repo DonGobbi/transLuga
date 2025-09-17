@@ -1,9 +1,12 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaLanguage, FaHandshake, FaGlobe, FaPhoneAlt, FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaLanguage, FaHandshake, FaGlobe, FaPhoneAlt, FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaCheck } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import TranslationDemo from '../components/TranslationDemo';
+import TestimonialCarousel from '../components/TestimonialCarousel';
+import NewsletterSignup from '../components/NewsletterSignup';
+import CaseStudies from '../components/CaseStudies';
 
 export default function Home() {
   const [typedText, setTypedText] = useState('');
@@ -16,6 +19,27 @@ export default function Home() {
     'BUSINESS',
     'BRAND',
     'PARTNERS'
+  ];
+  
+  const testimonials = [
+    {
+      id: 1,
+      quote: "Our partnership with Transluga allowed us to scale up and do virtual application prep that led to over 2200 TPS applications being filed in Colorado in under 6 months - totally free to the applicants. The scale and speed of the project would not have been possible without Transluga's quick, accurate, and professional translations.",
+      author: "Brandon Roché",
+      company: "Roché Immigration, Denver, Colorado"
+    },
+    {
+      id: 2,
+      quote: "Transluga's expertise in African languages was invaluable for our expansion into East African markets. Their cultural insights helped us avoid potential missteps in our marketing materials and connect authentically with our new audience.",
+      author: "Maria Sanchez",
+      company: "Global Reach Enterprises"
+    },
+    {
+      id: 3,
+      quote: "We needed urgent translation for a conference in Kinshasa, and Transluga delivered flawlessly. Their interpreters' knowledge of local dialects made all the difference in ensuring our message was clearly understood.",
+      author: "Jean-Pierre Mutombo",
+      company: "International Aid Organization"
+    }
   ];
   
   useEffect(() => {
@@ -115,20 +139,7 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">What Our Clients Say</h2>
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="bg-gray-50 p-8 rounded-lg shadow-sm">
-              <p className="text-gray-700 italic mb-6">
-                "Our partnership with Transluga allowed us to scale up and do virtual application prep that led to over 2200 TPS applications being filed in Colorado in under 6 months - totally free to the applicants. The scale and speed of the project would not have been possible without Transluga's quick, accurate, and professional translations and we're grateful for their cooperation."
-              </p>
-              <p className="text-secondary-600 font-semibold">Brandon Roché, Roché Immigration, Denver, Colorado</p>
-            </div>
-            
-            <div className="flex justify-center mt-4 space-x-2">
-              <div className="h-2 w-2 rounded-full bg-primary-700"></div>
-              <div className="h-2 w-2 rounded-full bg-secondary-500"></div>
-              <div className="h-2 w-2 rounded-full bg-secondary-500"></div>
-            </div>
-          </div>
+          <TestimonialCarousel testimonials={testimonials} autoplaySpeed={6000} />
           
           {/* Service Highlights */}
           <div className="grid md:grid-cols-3 gap-8 mt-16">
@@ -302,6 +313,26 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      {/* Case Studies Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Success Stories</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              See how we've helped organizations overcome language barriers and achieve their communication goals.
+            </p>
+          </div>
+          
+          <CaseStudies limit={2} />
+          
+          <div className="text-center mt-12">
+            <Link href="/case-studies" className="inline-block bg-secondary-600 hover:bg-secondary-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">
+              View All Case Studies
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Why Choose Us */}
       <section className="py-16 bg-gray-50">
@@ -322,6 +353,43 @@ export default function Home() {
             <div className="bg-white p-8 rounded-lg shadow-md">
               <h3 className="text-xl font-bold mb-4">Competitive Pricing</h3>
               <p className="text-gray-600">Transparent pricing with no hidden fees, tailored to fit your budget and requirements.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Stay Updated</h2>
+              <p className="text-gray-600 mb-6">
+                Subscribe to our newsletter to receive the latest updates on translation industry trends, cultural insights about African languages, and exclusive offers.
+              </p>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-center">
+                  <div className="bg-primary-100 p-1 rounded-full mr-3">
+                    <FaCheck className="text-primary-600 h-3 w-3" />
+                  </div>
+                  <span className="text-gray-700">Monthly language and culture insights</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="bg-primary-100 p-1 rounded-full mr-3">
+                    <FaCheck className="text-primary-600 h-3 w-3" />
+                  </div>
+                  <span className="text-gray-700">Translation tips and best practices</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="bg-primary-100 p-1 rounded-full mr-3">
+                    <FaCheck className="text-primary-600 h-3 w-3" />
+                  </div>
+                  <span className="text-gray-700">Exclusive subscriber discounts</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <NewsletterSignup />
             </div>
           </div>
         </div>
