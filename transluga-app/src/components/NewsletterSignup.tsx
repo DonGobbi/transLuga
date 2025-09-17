@@ -22,7 +22,7 @@ export default function NewsletterSignup({
   
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -34,40 +34,19 @@ export default function NewsletterSignup({
     
     setIsLoading(true);
     
-    try {
-      console.log('Attempting to subscribe with email:', email);
-      
-      const formspreeEndpoint = 'https://formspree.io/f/xandgakg';
-      
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('message', 'Newsletter subscription');
-      
-      const response = await fetch(formspreeEndpoint, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        setIsLoading(false);
-        setIsSubmitted(true);
-        setSuccessMessage('Thank you for subscribing to our newsletter!');
-        setEmail('');
-        console.log('Newsletter subscription processed successfully');
-      } else {
-        const responseData = await response.json();
-        console.error('Formspree error:', responseData);
-        throw new Error('Formspree submission failed');
-      }
-    } catch (error) {
-      console.error('Newsletter subscription error:', error);
-      setIsLoading(false);
-      setError('Something went wrong. Please try again later.');
-      setEmail('');
-    }
+    // Get the form element
+    const form = e.target as HTMLFormElement;
+    
+    // Submit the form
+    form.submit();
+    
+    // Show success message immediately
+    // Note: This will show even if the form submission fails on Formspree's end
+    // But the user will still see the Formspree success/error page
+    setIsLoading(false);
+    setIsSubmitted(true);
+    setSuccessMessage('Thank you for subscribing to our newsletter!');
+    setEmail('');
   };
   
   const textColorClass = darkMode ? 'text-white' : 'text-gray-800';
@@ -90,7 +69,7 @@ export default function NewsletterSignup({
           </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} action="https://formspree.io/f/xandgakg" method="POST" className="space-y-4">
           <div>
             <label htmlFor="email" className={`block text-sm font-medium mb-1 ${textColorClass}`}>
               Email Address
@@ -98,6 +77,7 @@ export default function NewsletterSignup({
             <div className="relative">
               <input
                 id="email"
+                name="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -107,6 +87,8 @@ export default function NewsletterSignup({
               />
             </div>
             {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+            <input type="hidden" name="message" value="Newsletter subscription" />
+            <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} aria-hidden="true" />
           </div>
           
           <div className="flex items-center">
