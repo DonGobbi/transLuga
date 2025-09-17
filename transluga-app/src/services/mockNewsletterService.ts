@@ -11,22 +11,25 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     // Your Formspree newsletter form endpoint
     const formspreeEndpoint = 'https://formspree.io/f/xandgakg';
     
+    console.log(`Sending to Formspree endpoint: ${formspreeEndpoint}`);
+    
+    // Formspree expects form data in a specific format
+    // Let's use FormData instead of JSON for better compatibility
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('subject', 'New Newsletter Subscription');
+    formData.append('message', `New subscriber: ${email}`);
+    
     // Send the data to Formspree
     const response = await fetch(formspreeEndpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        subject: 'New Newsletter Subscription',
-        message: `New subscriber: ${email}`
-      })
+      body: formData
     });
     
     if (!response.ok) {
-      throw new Error(`Formspree submission failed: ${response.status}`);
+      const errorText = await response.text();
+      console.error(`Formspree submission failed: ${response.status}`, errorText);
+      throw new Error(`Formspree submission failed: ${response.status}. ${errorText}`);
     }
     
     const result = await response.json();
@@ -35,6 +38,12 @@ export const addNewsletterSubscriber = async (email: string): Promise<string> =>
     return 'success';
   } catch (error) {
     console.error('Error submitting newsletter subscription:', error);
+    
+    // Log additional details if it's a network error
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      console.error('Network error: This might be a CORS issue or network connectivity problem');
+    }
+    
     // Still return success to the user even if there's an error
     // This provides a good user experience while you debug any issues
     return 'success';
