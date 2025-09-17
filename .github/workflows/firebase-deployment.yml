@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: transluga-app/package-lock.json
 
@@ -76,4 +76,6 @@ jobs:
           channelId: live
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
           entryPoint: './transluga-app'
-          targets: hosting
+          target: hosting
+          expires: 7d
+          firebaseToolsVersion: '11.30.0'
