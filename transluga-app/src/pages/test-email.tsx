@@ -138,8 +138,24 @@ export default function TestEmail() {
             <li>Enter a valid email address where you want to receive the test confirmation.</li>
             <li>Select whether you want to test the Newsletter or Contact Form confirmation.</li>
             <li>Click "Send Test Email" and check your inbox for the confirmation email.</li>
+            <li><strong>Important:</strong> The admin (calvezgobbi@gmail.com) will receive a notification email.</li>
+            <li>Check both your inbox and spam folder for the confirmation email.</li>
             <li>Note: This page is for testing purposes only and should be removed in production.</li>
           </ol>
+        </div>
+        
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <h2 className="text-lg font-medium text-gray-800 mb-4">How It Works</h2>
+          <p className="text-gray-600 mb-4">
+            This test sends two separate emails through Formspree:
+          </p>
+          <ol className="list-decimal pl-5 space-y-2 text-gray-600">
+            <li><strong>Admin Notification:</strong> Sends an email to calvezgobbi@gmail.com with details about the submission.</li>
+            <li><strong>User Confirmation:</strong> Sends a confirmation email to the address you entered with a thank you message.</li>
+          </ol>
+          <p className="text-gray-600 mt-4">
+            Both emails are sent through Formspree using their API. If emails are going to spam, you may need to add Formspree to your safe senders list.
+          </p>
         </div>
       </div>
     </div>

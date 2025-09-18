@@ -33,52 +33,79 @@ export const sendConfirmationEmail = async (data: EmailData): Promise<boolean> =
       ? 'https://formspree.io/f/xandgakg' // Newsletter form endpoint
       : 'https://formspree.io/f/meolbvwe'; // Contact form endpoint
     
-    // Prepare the form data with _autoresponse field to trigger Formspree's auto-response
-    const formData = new FormData();
-    formData.append('email', data.email);
+    const adminEmail = data.adminEmail || ADMIN_EMAIL;
     
+    // First, send the notification to the admin
+    const adminFormData = new FormData();
+    adminFormData.append('email', adminEmail); // This will be the recipient
+    adminFormData.append('_replyto', data.email); // Make it easy to reply to the user
+    
+    // Add user details
     if (data.name) {
-      formData.append('name', data.name);
+      adminFormData.append('name', data.name);
     }
+    
+    // Create a descriptive subject line
+    const adminSubject = data.formType === 'newsletter' 
+      ? `New Newsletter Subscription: ${data.email}` 
+      : `New Contact Form Submission: ${data.name || data.email}`;
+    adminFormData.append('_subject', adminSubject);
     
     // Add message content
     const messageContent = data.message || 
       (data.formType === 'newsletter' 
         ? 'Newsletter subscription' 
         : 'Contact form submission');
-    formData.append('message', messageContent);
+    adminFormData.append('message', messageContent);
     
-    // This is the key field that tells Formspree to send an autoresponse
-    formData.append('_autoresponse', getAutoResponseTemplate(data));
-    
-    // This tells Formspree to use a specific subject for the autoresponse
-    const emailSubject = data.subject || 
-      (data.formType === 'newsletter' 
-        ? 'Thank you for subscribing to Transluga Newsletter!' 
-        : 'We received your message - Transluga');
-    formData.append('_subject', emailSubject);
-    
-    // Add admin email as CC to ensure admin gets a copy of all submissions
-    const adminEmail = data.adminEmail || ADMIN_EMAIL;
-    formData.append('_cc', adminEmail);
-    
-    // Add replyto field to make it easy to reply to the sender
-    formData.append('_replyto', data.email);
-    
-    // Add website URL as a reference
-    formData.append('_website', 'https://dongobbi.github.io/transLuga/');
-    
-    // Send the request to Formspree
-    const response = await fetch(formspreeEndpoint, {
+    // Send the admin notification
+    const adminResponse = await fetch(formspreeEndpoint, {
       method: 'POST',
-      body: formData,
+      body: adminFormData,
       headers: {
         'Accept': 'application/json'
       }
     });
     
-    if (!response.ok) {
-      throw new Error(`Failed to send confirmation email: ${response.statusText}`);
+    if (!adminResponse.ok) {
+      console.error(`Failed to send admin notification: ${adminResponse.statusText}`);
+    }
+    
+    // Now send the confirmation to the user
+    const userFormData = new FormData();
+    userFormData.append('email', data.email); // User's email
+    userFormData.append('_replyto', adminEmail); // Admin's email as reply-to
+    
+    if (data.name) {
+      userFormData.append('name', data.name);
+    }
+    
+    // Use a simple text message for the confirmation
+    // This will be shown in the Formspree dashboard
+    userFormData.append('message', data.formType === 'newsletter' 
+      ? 'Thank you for subscribing to our newsletter!' 
+      : 'Thank you for contacting us!');
+    
+    // Set the subject for the user's confirmation email
+    const userSubject = data.formType === 'newsletter' 
+      ? 'Thank you for subscribing to Transluga Newsletter!' 
+      : 'We received your message - Transluga';
+    userFormData.append('_subject', userSubject);
+    
+    // Add the HTML template as the autoresponse
+    userFormData.append('_autoresponse', getAutoResponseTemplate(data));
+    
+    // Send the confirmation to the user
+    const userResponse = await fetch(formspreeEndpoint, {
+      method: 'POST',
+      body: userFormData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (!userResponse.ok) {
+      throw new Error(`Failed to send confirmation email: ${userResponse.statusText}`);
     }
     
     console.log(`Confirmation email sent to ${data.email}`);
