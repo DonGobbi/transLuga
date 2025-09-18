@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaGlobe, FaLanguage, FaArrowRight, FaCheck, FaExclamationCircle } from 'react-icons/fa';
-// Using Formspree directly in the component
+import { sendConfirmationEmail } from '../services/emailService';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -30,18 +30,75 @@ export default function Contact() {
     }));
   };
 
-  // Using a pure HTML form approach for Formspree
-  const handleSubmit = (e: React.FormEvent) => {
-    // We're using the native form submission, so we don't need to prevent default
-    // The form will be submitted directly to Formspree
+  // Handle form submission with confirmation email
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     
-    // Just for UX, set loading state
+    // Set loading state
     setFormStatus({
       submitted: false,
       error: false,
       message: '',
       isLoading: true,
     });
+    
+    try {
+      // First submit to Formspree
+      const formspreeEndpoint = 'https://formspree.io/f/meolbvwe';
+      const formspreeResponse = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      if (!formspreeResponse.ok) {
+        throw new Error('Failed to submit contact form');
+      }
+      
+      // Then send confirmation email
+      const confirmationSent = await sendConfirmationEmail({
+        email: formData.email,
+        name: formData.name,
+        formType: 'contact',
+        adminEmail: 'calvezgobbi@gmail.com', // Your admin email
+        subject: 'We received your message - Transluga',
+        message: `Service: ${formData.service}\nSource Language: ${formData.sourceLanguage}\nTarget Language: ${formData.targetLanguage}\n\n${formData.message}`
+      });
+      
+      if (!confirmationSent) {
+        console.warn('Confirmation email could not be sent, but form was submitted');
+      }
+      
+      // Update status
+      setFormStatus({
+        submitted: true,
+        error: false,
+        message: 'Thank you for your message! We will get back to you soon. A confirmation email has been sent to your inbox.',
+        isLoading: false,
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        sourceLanguage: '',
+        targetLanguage: '',
+        message: '',
+      });
+    } catch (error) {
+      console.error('Contact form submission error:', error);
+      setFormStatus({
+        submitted: false,
+        error: true,
+        message: 'There was an error submitting your message. Please try again or contact us directly.',
+        isLoading: false,
+      });
+    }
   };
 
   const services = [
@@ -230,7 +287,7 @@ export default function Contact() {
                 </div>
               ) : null}
               
-              <form action="https://formspree.io/f/meolbvwe" method="POST" className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-gray-700 font-medium mb-2">

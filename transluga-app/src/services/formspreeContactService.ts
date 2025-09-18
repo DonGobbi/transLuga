@@ -1,3 +1,5 @@
+import { sendConfirmationEmail } from './emailService';
+
 /**
  * Contact form submission service using Formspree
  * @param formData - The contact form data
@@ -21,44 +23,35 @@ export const submitContactForm = async (formData: {
     
     console.log(`Sending to Formspree endpoint: ${formspreeEndpoint}`);
     
-    // For Formspree, the simplest approach is to use their recommended HTML form submission method
-    // Create a hidden form element, submit it, and then remove it
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = formspreeEndpoint;
-    form.target = '_blank'; // This prevents page navigation
-    form.style.display = 'none';
+    // Submit to Formspree using fetch API
+    const response = await fetch(formspreeEndpoint, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
     
-    // Add all form fields
-    const addField = (name: string, value: string) => {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.name = name;
-      input.value = value;
-      form.appendChild(input);
-    };
+    if (!response.ok) {
+      throw new Error(`Formspree submission failed: ${response.statusText}`);
+    }
     
-    addField('name', formData.name);
-    addField('email', formData.email);
-    addField('phone', formData.phone);
-    addField('service', formData.service);
-    addField('sourceLanguage', formData.sourceLanguage);
-    addField('targetLanguage', formData.targetLanguage);
-    addField('message', formData.message);
-    addField('subject', `New Contact Form Submission from ${formData.name}`);
+    // Send confirmation email
+    const confirmationSent = await sendConfirmationEmail({
+      email: formData.email,
+      name: formData.name,
+      formType: 'contact',
+      adminEmail: 'calvezgobbi@gmail.com', // Your admin email
+      subject: 'We received your message - Transluga',
+      message: `Service: ${formData.service}\nSource Language: ${formData.sourceLanguage}\nTarget Language: ${formData.targetLanguage}\n\n${formData.message}`
+    });
     
-    // Append form to body, submit it, and remove it
-    document.body.appendChild(form);
-    form.submit();
+    if (!confirmationSent) {
+      console.warn('Confirmation email could not be sent, but form was submitted');
+    }
     
-    // Use a timeout to give the form time to submit before removing it
-    setTimeout(() => {
-      document.body.removeChild(form);
-    }, 1000);
-    
-    // Since we're using the form submission approach, we don't have a response to check
-    // Just return success
-    console.log('Contact form submission initiated');
+    console.log('Contact form submission completed successfully');
     return 'success';
   } catch (error) {
     console.error('Error submitting contact form:', error);
@@ -68,8 +61,6 @@ export const submitContactForm = async (formData: {
       console.error('Network error: This might be a CORS issue or network connectivity problem');
     }
     
-    // Still return success to the user even if there's an error
-    // This provides a good user experience while you debug any issues
-    return 'success';
+    throw error; // Propagate the error to be handled by the caller
   }
 };
