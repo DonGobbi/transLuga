@@ -147,15 +147,26 @@ export default function TestEmail() {
         <div className="mt-8 pt-6 border-t border-gray-200">
           <h2 className="text-lg font-medium text-gray-800 mb-4">How It Works</h2>
           <p className="text-gray-600 mb-4">
-            This test sends two separate emails through Formspree:
+            This test uses Formspree's autoresponse feature to send confirmation emails:
           </p>
           <ol className="list-decimal pl-5 space-y-2 text-gray-600">
             <li><strong>Admin Notification:</strong> Sends an email to calvezgobbi@gmail.com with details about the submission.</li>
-            <li><strong>User Confirmation:</strong> Sends a confirmation email to the address you entered with a thank you message.</li>
+            <li><strong>User Confirmation:</strong> Formspree sends an automatic response to the email address you entered.</li>
           </ol>
-          <p className="text-gray-600 mt-4">
-            Both emails are sent through Formspree using their API. If emails are going to spam, you may need to add Formspree to your safe senders list.
+          <p className="text-gray-600 mt-4 font-bold text-red-600">
+            IMPORTANT: Check both your inbox AND spam folder for the confirmation email. You may need to add formspree.io to your safe senders list.
           </p>
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+            <p className="text-yellow-700">
+              <strong>Note:</strong> If you're not receiving confirmation emails, please try these steps:
+            </p>
+            <ol className="list-decimal pl-5 space-y-1 text-yellow-700 mt-2">
+              <li>Check your spam/junk folder</li>
+              <li>Add formspree.io to your email's safe senders list</li>
+              <li>Try a different email address (Gmail, Outlook, etc.)</li>
+              <li>Wait a few minutes as email delivery can sometimes be delayed</li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>

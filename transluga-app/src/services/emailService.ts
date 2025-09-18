@@ -35,41 +35,47 @@ export const sendConfirmationEmail = async (data: EmailData): Promise<boolean> =
     
     const adminEmail = data.adminEmail || ADMIN_EMAIL;
     
-    // Create a single FormData object for the submission
+    // IMPORTANT: For Formspree to send an email to the user, we need to use their
+    // standard form submission approach where the form is submitted directly
+    // to Formspree with the user's email in the _replyto field
+    
+    // Create the form data for submission
     const formData = new FormData();
     
-    // Add the user's email as the primary email
-    formData.append('email', data.email);
+    // This is the key: we're setting the admin email as the primary recipient
+    // but we're configuring Formspree to send an autoresponse to the user
+    formData.append('email', adminEmail); // Admin gets the notification
+    
+    // The user's email goes in the _replyto field
+    formData.append('_replyto', data.email);
     
     // Add user details
     if (data.name) {
       formData.append('name', data.name);
     }
     
-    // Add message content
-    const messageContent = data.message || 
-      (data.formType === 'newsletter' 
-        ? 'Newsletter subscription' 
-        : 'Contact form submission');
+    // Create a descriptive message that includes all the details
+    const formType = data.formType === 'newsletter' ? 'Newsletter Subscription' : 'Contact Form';
+    const messageContent = `New ${formType} from ${data.name || data.email}\n\n` +
+      `Email: ${data.email}\n` +
+      (data.name ? `Name: ${data.name}\n` : '') +
+      (data.message ? `Message: ${data.message}` : '');
+    
     formData.append('message', messageContent);
     
-    // Add CC to admin email so they get a copy
-    formData.append('_cc', adminEmail);
+    // Set a descriptive subject line
+    const subject = data.formType === 'newsletter'
+      ? `New Newsletter Subscription: ${data.email}`
+      : `New Contact Form: ${data.name || data.email}`;
+    formData.append('_subject', subject);
     
-    // Make it easy to reply to the user
-    formData.append('_replyto', data.email);
-    
-    // Set the subject for the email
-    const emailSubject = data.formType === 'newsletter' 
-      ? 'Thank you for subscribing to Transluga Newsletter!' 
-      : 'We received your message - Transluga';
-    formData.append('_subject', emailSubject);
-    
-    // Add the HTML template as the autoresponse
-    // This is what the user will receive
+    // This is the critical part: configure the autoresponse that will be sent to the user
     formData.append('_autoresponse', getAutoResponseTemplate(data));
     
-    // Send the form submission
+    // Add a field to tell Formspree which email to send the autoresponse to
+    formData.append('_autoresponse_email', data.email);
+    
+    // Send the form submission to Formspree
     const response = await fetch(formspreeEndpoint, {
       method: 'POST',
       body: formData,
@@ -83,43 +89,6 @@ export const sendConfirmationEmail = async (data: EmailData): Promise<boolean> =
     }
     
     console.log(`Form submitted successfully for ${data.email}`);
-    
-    // Now send a separate notification to the admin with more details
-    const adminFormData = new FormData();
-    adminFormData.append('email', adminEmail); // Admin's email
-    adminFormData.append('_replyto', data.email); // User's email as reply-to
-    
-    // Create a descriptive subject line for admin
-    const adminSubject = data.formType === 'newsletter' 
-      ? `New Newsletter Subscription: ${data.email}` 
-      : `New Contact Form Submission: ${data.name || data.email}`;
-    adminFormData.append('_subject', adminSubject);
-    
-    // Add detailed message for admin
-    adminFormData.append('message', `
-      New ${data.formType === 'newsletter' ? 'newsletter subscription' : 'contact form submission'}
-
-
-      Email: ${data.email}
-      Name: ${data.name || 'Not provided'}
-      ${data.message ? `Message: ${data.message}` : ''}
-    `);
-    
-    // Send the admin notification
-    const adminResponse = await fetch(formspreeEndpoint, {
-      method: 'POST',
-      body: adminFormData,
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-    
-    if (!adminResponse.ok) {
-      console.error(`Failed to send admin notification: ${adminResponse.statusText}`);
-      // Don't throw error here, as the primary submission succeeded
-    }
-    
-    console.log(`Confirmation email sent to ${data.email}`);
     return true;
   } catch (error) {
     console.error('Error sending confirmation email:', error);
